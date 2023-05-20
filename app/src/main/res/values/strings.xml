@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">VisualMemoryTraining</string>
+    <string name="timer">Осталось:\n0%d:%d%d</string>
+    <string name="to_questions">Перейти к вопросам</string>
+    <string name="your_result">Ваш результат:</string>
+    <string name="to_tasks">К заданиям</string>
+</resources>

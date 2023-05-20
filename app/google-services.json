@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "184414301304",
+    "firebase_url": "https://databasevisualmemory-default-rtdb.firebaseio.com",
+    "project_id": "databasevisualmemory",
+    "storage_bucket": "databasevisualmemory.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184414301304:android:021bcb8b8abb1c8124918d",
+        "android_client_info": {
+          "package_name": "com.example.visualmemorytraining"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184414301304-qqs3ag2a0qlrb7r3lh517jf40qi8vpt4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5L0xHxUgzc2LWrU__f1CzfOnhvuO4kTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184414301304-qqs3ag2a0qlrb7r3lh517jf40qi8vpt4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
