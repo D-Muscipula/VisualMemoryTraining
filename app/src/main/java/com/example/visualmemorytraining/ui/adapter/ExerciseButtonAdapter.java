@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,10 +24,17 @@ import com.example.visualmemorytraining.data.Data;
 import com.example.visualmemorytraining.data.Task;
 import com.example.visualmemorytraining.data.Tasks;
 import com.example.visualmemorytraining.databinding.ExerciseButtonListItemBinding;
+import com.example.visualmemorytraining.databinding.FragmentMainBinding;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAdapter.ExerciseButtonViewHolder> implements View.OnClickListener{
+    private static final int VIEW_TYPE_ITEM_TYPE_1 = 1;
+    private static final int VIEW_TYPE_ITEM_TYPE_2 = 2;
+    private static final int VIEW_TYPE_ITEM_TYPE_3 = 3;
+    private static final int VIEW_TYPE_ITEM_TYPE_4 = 4;
+    private static final int VIEW_TYPE_ITEM_TYPE_5 = 5;
     private final List<Data> data;
     public ExerciseButtonAdapter(List<Data> data) {
         this.data = data;
@@ -64,12 +72,26 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
         layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
         layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
         holder.buttonExercise.setLayoutParams(layoutParams);
+        int type = getItemViewType(position);
+        if(type == 2){
+            holder.buttonExercise.setImageResource(R.drawable.circle_button__3_r);
+
+        }
+        else if (type == 1){
+            holder.buttonExercise.setImageResource(R.drawable.circle_button__3_green);
+        }
+        else if (type == 3){
+            holder.buttonExercise.setImageResource(R.drawable.circle_button__3_rr);
+        }
+        else if (type == 4){
+            holder.buttonExercise.setImageResource(R.drawable.circle_button__3_unk);
+        }
         /*Drawable image = ContextCompat.getDrawable(holder.buttonExercise.getContext(), R.drawable.circle_button__3_);
         int h = image.getIntrinsicHeight();
         int w = image.getIntrinsicWidth();
         image.setBounds( 0, 0, w, h );
         holder.buttonExercise.setCompoundDrawables( image, null, null, null );*/
-        int currentNightMode = holder.buttonExercise.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+       /* int currentNightMode = holder.buttonExercise.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         switch (currentNightMode) {
             case Configuration.UI_MODE_NIGHT_NO:
                 // Night mode is not active, we're using the light theme
@@ -80,7 +102,7 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
                 holder.buttonExercise.setImageResource(R.drawable.circle_button__3_night);
                 Log.i("Theme", "Dark");
                 break;
-        }
+        }*/
     }
 
     @Override
@@ -104,7 +126,7 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
                 //Toast.makeText(v.getContext(), "It just works "+button.getName(), Toast.LENGTH_SHORT).show();}
             }
             catch (IndexOutOfBoundsException e){
-                Toast.makeText(v.getContext(), "В разработке",Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "В разработке, дождитесь обновления :-)",Toast.LENGTH_LONG).show();
             }
 
         }
@@ -115,7 +137,26 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
         public ExerciseButtonViewHolder(ExerciseButtonListItemBinding binding) {
             super(binding.getRoot());
             buttonExercise = binding.itemButton;
+            
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        // Определите условие для определения типа айтема в данной позиции
+        if (position > 4 && position < 10) {
+            return VIEW_TYPE_ITEM_TYPE_1;
+        } else if (position > 9 && position < 15){
+            return VIEW_TYPE_ITEM_TYPE_2;
+        }
+     else if (position > 14 && position < 20){
+        return VIEW_TYPE_ITEM_TYPE_3;
+    }
+        else if (position > 19 && position < 25){
+            return VIEW_TYPE_ITEM_TYPE_4;
+        }
+        else
+            return VIEW_TYPE_ITEM_TYPE_5;
     }
 
 }

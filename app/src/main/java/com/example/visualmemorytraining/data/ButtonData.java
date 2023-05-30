@@ -8,8 +8,9 @@ public class ButtonData {
     //map?
     public static ArrayList<Data> getSource(){
         ArrayList<Data> list = new ArrayList<>();
-        for (int i = 1; i < 51; i++) {
-            list.add(new Data(String.valueOf(i)));
+        for (int i = 1; i < 26; i++) {
+            Data button = new Data(String.valueOf(i));
+            list.add(button);
         }
         return list;
     }

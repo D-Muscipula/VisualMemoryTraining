@@ -37,7 +37,7 @@ public class ResultFragment extends Fragment {
                 }
             }
         }
-        if(sum == 10){
+        if(sum == 7){
             binding.textView.setText("Все правильно!");
         }
         else{

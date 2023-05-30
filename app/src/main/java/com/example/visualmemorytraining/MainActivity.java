@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             // Now recreate for it to take effect
             recreate();
         }*/
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
 

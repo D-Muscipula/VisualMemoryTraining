@@ -27,37 +27,60 @@ public class ImageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = ImageFragmentBinding.inflate(inflater,container,false);
+        int num = Integer.parseInt(getArguments().getSerializable("task").toString());
         binding.progressBar.setVisibility(View.VISIBLE);
         ImageView image = binding.imageView;
+        int time = 120000;
+        if(num > 5 && num < 11)
+            time = 180000;
+        else if(num > 10)
+            time = 240000;
+        CountDownTimer timer = new CountDownTimer(time,1){
+            @Override
+            public void onTick(long millisUntilFinished) {
+                binding.textViewImage.setText(String.format(getString(R.string.timer),millisUntilFinished/1000/60, (millisUntilFinished/1000-millisUntilFinished/1000/60*60)/10,(millisUntilFinished/1000-millisUntilFinished/1000/60*60)%10));
+            }
+            //TODO баг: когда истекает таймер при свернутом приложении, фрагмент не переключается Ignoring navigate() call: FragmentManager has already saved its state
+            @Override
+            public void onFinish() {
+                Navigation.findNavController(binding.getRoot())
+                        .navigate(R.id.action_imageFragment_to_questionFragment,getArguments());
+            }
+        };
+        int dimen_width = R.dimen.image_width;
+        int dimen_height = R.dimen.image_height;
+
+        if(num == 1 || num == 2 || num == 10 || num == 11 || num == 13 || num == 18){
+            dimen_width = R.dimen.image_width1;
+            dimen_height = R.dimen.image_height1;
+        }
+        else if (num == 16) {
+            dimen_width = R.dimen.image_width1;
+            dimen_height = R.dimen.image_height2;
+        }
         Picasso.get().load(Tasks.getUrls().get(Integer.valueOf(getArguments().getSerializable("task").toString())-1))
-                .resizeDimen(R.dimen.image_width,R.dimen.image_height)
+                .resizeDimen(dimen_width,dimen_height)
                 .into(image, new Callback() {
                     @Override
                     public void onSuccess() {
                         // Изображение успешно загружено
+                        timer.start();
                         // Вы можете выполнить необходимые действия после успешной загрузки
                         binding.progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(Exception e) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(),"Ошибка при загрузке изображения", Toast.LENGTH_LONG).show();
+                        Navigation.findNavController(binding.getRoot())
+                                .navigate(R.id.action_imageFragment_to_mainFragment,getArguments());
                         // Возникла ошибка при загрузке изображения
                         // Вы можете выполнить необходимые действия при ошибке загрузки
                     }
                 });;
         //TODO error и экран загрузки
-        CountDownTimer timer = new CountDownTimer(60000,1){
-            @Override
-            public void onTick(long millisUntilFinished) {
-                binding.textViewImage.setText(String.format(getString(R.string.timer),millisUntilFinished/1000/60, (millisUntilFinished/1000-millisUntilFinished/1000/60*60)/10,(millisUntilFinished/1000-millisUntilFinished/1000/60*60)%10));
-            }
-           //TODO баг: когда истекает таймер при свернутом приложении, фрагмент не переключается Ignoring navigate() call: FragmentManager has already saved its state
-            @Override
-            public void onFinish() {
-                Navigation.findNavController(binding.getRoot())
-                        .navigate(R.id.action_imageFragment_to_questionFragment,getArguments());
-            }
-        }.start();
+
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             //при нажатии кнопки назад происходит возврат

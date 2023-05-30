@@ -33,7 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainFragment extends Fragment {
-    private FragmentMainBinding binding;
+    public FragmentMainBinding binding;
     private DatabaseReference mDataBase;
     private String USER_KEY = "User";
     private MainFragmentViewModel viewModel;
