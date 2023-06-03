@@ -34,6 +34,7 @@ public class LeaderBoardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = LeaderBoardFragmentBinding.inflate(inflater, container, false);
         binding.progressBar.setVisibility(View.VISIBLE);
+        //Получение 10 пользователей с самым большим количеством очков
         List<User> ten = new ArrayList<>();
         List<TextView> views= new ArrayList<>();
         addView(views);
@@ -61,9 +62,9 @@ public class LeaderBoardFragment extends Fragment {
 
                     ten.set(i[0],user);
                     i[0] ++ ;
-                    //if (i[0] == 10) break;
                     // Обработка каждого пользователя
                 }
+                //Отрисовка после получения данных
                 for (int j = 0; j < 10; j++) {
                     TextView temp = views.get(j);
                     User tempUser = ten.get(j);
@@ -88,12 +89,12 @@ public class LeaderBoardFragment extends Fragment {
             }
         });
 
-
+        //Кнопка перехода на гланый фрагмент
         binding.toTasks.setOnClickListener(v -> {
             Navigation.findNavController(v)
                     .navigate(R.id.action_leaderBoardFragment_to_mainFragment);
         });
-
+        //Кнопка выхода из аккаунта
         binding.logOut.setOnClickListener(v -> {
             DialogFragment newFragment = new LogOutDialogFragmentFromLeaderBoard();
             newFragment.show(getParentFragmentManager(), "exit");

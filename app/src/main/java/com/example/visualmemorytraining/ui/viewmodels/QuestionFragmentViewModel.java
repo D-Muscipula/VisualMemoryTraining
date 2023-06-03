@@ -1,4 +1,4 @@
-package com.example.visualmemorytraining;
+package com.example.visualmemorytraining.ui.viewmodels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -8,9 +8,7 @@ import java.util.ArrayList;
 public class QuestionFragmentViewModel extends ViewModel {
     private int numberOfQuestionValue = 1;
     private final ArrayList<Integer> scoresValue = new ArrayList<>();
-    //private int scoresValue = 0;
     private final MutableLiveData<Integer> numberOfQuestion = new MutableLiveData<>();
-    //private final MutableLiveData<Integer> scores = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Integer>> scores = new MutableLiveData<>();
 
     public MutableLiveData<Integer> getNumberOfQuestion() {
@@ -21,7 +19,7 @@ public class QuestionFragmentViewModel extends ViewModel {
     public int getNumberOfQuestionValue() {
         return numberOfQuestionValue;
     }
-
+    //Увеличение номера вопроса
     public void increaseNumberOfQuestion() {
         numberOfQuestionValue++;
         numberOfQuestion.setValue(numberOfQuestionValue);
@@ -34,14 +32,16 @@ public class QuestionFragmentViewModel extends ViewModel {
     public MutableLiveData<ArrayList<Integer>> getScores() {
         return scores;
     }
-    public void formResult(int r){
+    //Формирует лист нулей и единиц, 1 - правильный ответ на вопрос, 0 - неверный
+    public void formResult(int r) {
         scoresValue.add(r);
         scores.setValue(scoresValue);
     }
-    public int countScores(){
+    //Подсчет очков
+    public int countScores() {
         int sum = 0;
-        for (int x:scoresValue) {
-            sum+=x;
+        for (int x : scoresValue) {
+            sum += x;
         }
         return sum;
     }

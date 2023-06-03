@@ -29,10 +29,11 @@ public class LoginFragment extends Fragment {
     private LoginFragmentBinding binding;
     private FirebaseAuth mAuth;
     private DatabaseReference mDataBase;
-    private EditText login,password;
+    private EditText login, password;
     private TextView youAreSigned;
-    private Button signUp,enter,toApp,exit;
+    private Button signUp, enter, toApp, exit;
     private final String USER_KEY = "User";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,48 +47,47 @@ public class LoginFragment extends Fragment {
         youAreSigned = binding.signIn;
         exit = binding.exit;
         mAuth = FirebaseAuth.getInstance();
+        //Регистрация
         signUp.setOnClickListener(v -> {
             if (!login.getText().toString().equals("") && !password.getText().toString().equals("")) {
-                if(password.getText().toString().length() < 6) {
-                Toast.makeText(getContext(),"Пароль должен быть больше 5 символов",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {mAuth.createUserWithEmailAndPassword(login.getText().toString(),password.getText().toString())
-                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getContext(),"Пользователь успешно зарегистрирован",Toast.LENGTH_SHORT).show();
-                                    //User user = new User(mDataBase.getKey(),login.getText().toString(), MainActivity.getPref().getInt("scores",0));
-                                    User user = new User(mDataBase.getKey(),login.getText().toString(), 0);
-                                    //DatabaseReference ref= FirebaseDatabase.getInstance().getReference();
-                                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                    //ref.child(uid).child("note");
-                                    emailVer();
-                                    mDataBase.child(uid).setValue(user);
+                if (password.getText().toString().length() < 6) {
+                    Toast.makeText(getContext(), "Пароль должен быть больше 5 символов", Toast.LENGTH_SHORT).show();
+                } else {
+                    mAuth.createUserWithEmailAndPassword(login.getText().toString(), password.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Пользователь успешно зарегистрирован", Toast.LENGTH_SHORT).show();
+                                        //User user = new User(mDataBase.getKey(),login.getText().toString(), MainActivity.getPref().getInt("scores",0));
+                                        User user = new User(mDataBase.getKey(), login.getText().toString(), 0);
+                                        //DatabaseReference ref= FirebaseDatabase.getInstance().getReference();
+                                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                        //ref.child(uid).child("note");
+                                        emailVer();
+                                        mDataBase.child(uid).setValue(user);
 
+                                    } else {
+                                        Toast.makeText(getContext(), "Ошибка регистрации", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                                else{
-                                    Toast.makeText(getContext(),"Ошибка регистрации",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-            }
-            else{
-                Toast.makeText(getContext(),"Пустое поле",Toast.LENGTH_SHORT).show();
+                            });
+                }
+            } else {
+                Toast.makeText(getContext(), "Пустое поле", Toast.LENGTH_SHORT).show();
             }
         });
 
+        //Вход
         enter.setOnClickListener(v -> {
 
-            if (!login.getText().toString().equals("") && !password.getText().toString().equals("") ){
-                mAuth.signInWithEmailAndPassword(login.getText().toString(),password.getText().toString())
+            if (!login.getText().toString().equals("") && !password.getText().toString().equals("")) {
+                mAuth.signInWithEmailAndPassword(login.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(task -> {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (task.isSuccessful() && user.isEmailVerified()) {
                                 FirebaseUser currentUser = mAuth.getCurrentUser();
-                                Toast.makeText(getContext(),"Успешный вход",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Успешный вход", Toast.LENGTH_SHORT).show();
                                 String userName = "Вы вошли как\n" + currentUser.getEmail();
                                 youAreSigned.setText(userName);
                                 youAreSigned.setVisibility(View.VISIBLE);
@@ -97,12 +97,10 @@ public class LoginFragment extends Fragment {
                                 password.setVisibility(View.GONE);
                                 signUp.setVisibility(View.GONE);
                                 enter.setVisibility(View.GONE);
-                            }
-                            else if(task.isSuccessful() && user.isEmailVerified() == false){
-                                Toast.makeText(getContext(),"Подтвердите почту",Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Toast.makeText(getContext(),"Ошибка входа",Toast.LENGTH_SHORT).show();
+                            } else if (task.isSuccessful() && user.isEmailVerified() == false) {
+                                Toast.makeText(getContext(), "Подтвердите почту", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Ошибка входа", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -119,21 +117,20 @@ public class LoginFragment extends Fragment {
         //updateUI(currentUser);
     }
 
-
-    public void emailVer(){
+    //Верификация по почте
+    public void emailVer() {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         user.sendEmailVerification().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                Toast.makeText(getContext(),"Подтвердите почту",Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(getContext(),"Ошибка подтверждения почты",Toast.LENGTH_SHORT).show();
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Подтвердите почту", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Ошибка подтверждения почты", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-    public void entered(){
+    //Пользователь вошел
+    public void entered() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             youAreSigned.setVisibility(View.GONE);

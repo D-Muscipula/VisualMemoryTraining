@@ -1,4 +1,4 @@
-package com.example.visualmemorytraining;
+package com.example.visualmemorytraining.ui.viewmodels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,7 +10,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 
 public class MainFragmentViewModel extends ViewModel {
-    //public final MutableLiveData<List<Data>> buttons = new MutableLiveData<>();
+    //Отвечает за очки и имейл текущего пользователя
     static int scores;
     static int email;
     private final static MutableLiveData<Integer> userScores = new MutableLiveData<>();

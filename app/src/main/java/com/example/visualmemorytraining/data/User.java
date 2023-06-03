@@ -1,11 +1,8 @@
 package com.example.visualmemorytraining.data;
-
+//Класс пользователя
 public class User {
     public String email, id;
-public int scores;
-    //public User(String key, String email, int scores) {
-    //
-
+    public int scores;
 
     public User() {
     }

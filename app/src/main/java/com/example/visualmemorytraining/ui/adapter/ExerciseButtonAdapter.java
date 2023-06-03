@@ -56,7 +56,7 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
         Data button = data.get(position);
         holder.buttonExercise.setTag(button);
         holder.itemView.setTag(button);
-        //holder.buttonExercise.setText(button .getName());
+        //Определение отступа для отрисовки кнопок по синусоиде
         int margin = (int) (Math.sin((Math.PI)/5 * position) * 100);
         // получаем отступ в пикселях для dp
         int marginInDp = (int) TypedValue.applyDimension(
@@ -65,7 +65,7 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
                 (ConstraintLayout.LayoutParams.WRAP_CONTENT , ConstraintLayout.LayoutParams.WRAP_CONTENT);
         if(position == 0) layoutParams.setMargins(0,(int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 40, holder.buttonExercise.getContext().getResources().getDisplayMetrics()),0,0);
-        //TODO для последнего убрать margin (если это из-за него внизу margin)
+
         layoutParams.setMarginEnd(marginInDp);
         layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
         layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
@@ -86,23 +86,6 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
         else if (type == 4){
             holder.buttonExercise.setImageResource(R.drawable.circle_button__3_unk);
         }
-        /*Drawable image = ContextCompat.getDrawable(holder.buttonExercise.getContext(), R.drawable.circle_button__3_);
-        int h = image.getIntrinsicHeight();
-        int w = image.getIntrinsicWidth();
-        image.setBounds( 0, 0, w, h );
-        holder.buttonExercise.setCompoundDrawables( image, null, null, null );*/
-       /* int currentNightMode = holder.buttonExercise.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        switch (currentNightMode) {
-            case Configuration.UI_MODE_NIGHT_NO:
-                // Night mode is not active, we're using the light theme
-                Log.i("Theme", "Light");
-                break;
-            case Configuration.UI_MODE_NIGHT_YES:
-                // Night mode is active, we're using dark theme
-                holder.buttonExercise.setImageResource(R.drawable.circle_button__3_night);
-                Log.i("Theme", "Dark");
-                break;
-        }*/
     }
 
     @Override
@@ -115,16 +98,14 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
     public void onClick(View v) {
         Data button = (Data) v.getTag();
         if (v.getId() == R.id.item_button){
-            //TODO
-            //правильно ли брать контексти у view
             try {
                 Task task = Tasks.getTasks().get(Integer.parseInt(button.getName()) - 1);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("task", button.getName());
                 Navigation.findNavController(v)
                         .navigate(R.id.action_mainFragment_to_imageFragment, bundle);
-                //Toast.makeText(v.getContext(), "It just works "+button.getName(), Toast.LENGTH_SHORT).show();}
             }
+            //Если к кнопке нет вопроса
             catch (IndexOutOfBoundsException e){
                 Toast.makeText(v.getContext(), "В разработке, дождитесь обновления :-)",Toast.LENGTH_LONG).show();
             }
@@ -142,8 +123,8 @@ public class ExerciseButtonAdapter extends RecyclerView.Adapter<ExerciseButtonAd
     }
 
     @Override
+    //Нужен для правильной отрисовки кнопок разных цветов
     public int getItemViewType(int position) {
-        // Определите условие для определения типа айтема в данной позиции
         if (position > 4 && position < 10) {
             return VIEW_TYPE_ITEM_TYPE_1;
         } else if (position > 9 && position < 15){

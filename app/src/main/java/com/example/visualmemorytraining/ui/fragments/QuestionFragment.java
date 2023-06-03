@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.example.visualmemorytraining.FireBaseRepository;
-import com.example.visualmemorytraining.QuestionFragmentViewModel;
+import com.example.visualmemorytraining.data.repositories.FireBaseRepository;
+import com.example.visualmemorytraining.ui.viewmodels.QuestionFragmentViewModel;
 import com.example.visualmemorytraining.R;
 import com.example.visualmemorytraining.data.Task;
 import com.example.visualmemorytraining.data.Tasks;
@@ -25,7 +25,6 @@ public class QuestionFragment extends Fragment {
     QuestionFragmentBinding binding;
     QuestionFragmentViewModel viewModel;
     Task task;
-    //final int[] numberOfQuestion = {1};
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,15 +35,9 @@ public class QuestionFragment extends Fragment {
         setViews();//отрисовка вопроса, кнопок
         viewModel.getNumberOfQuestion().observe(getViewLifecycleOwner(), numberOfQuestion -> {
             if (viewModel.getNumberOfQuestionValue() == 8) {//если 8, то переходит на фрагмент результа
-                //int scores = MainActivity.getPref().getInt("scores",0) + viewModel.countScores();
-
-//                String USER_KEY = "User";
-//                DatabaseReference mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
-//                User user = new User(mDataBase.getKey(), MainFragment.email , MainFragment.scores+viewModel.countScores());
-//                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//                mDataBase.child(uid).setValue(user);
+                //Обновление базы данных
                 FireBaseRepository.addDataBaseValue(viewModel.countScores());
-                //MainActivity.getPref().edit().putInt("scores",scores).apply();
+
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("scores", viewModel.getScoresValue());
                 Navigation.findNavController(binding.getRoot())
@@ -54,6 +47,7 @@ public class QuestionFragment extends Fragment {
             }
         });
 
+        //При нажатии кнопки сравнивается правильный ответ и ответ по номеру кнопки, если совпадают, то в список правильности ответов во viewModel заносится 1
         binding.questionButton1.setOnClickListener(v -> {
             if(Objects.equals(task.getList().get(viewModel.getNumberOfQuestionValue() - 1).getAnswers()[0], task.getList().get(viewModel.getNumberOfQuestionValue() - 1).getRightAnswer())){
                 viewModel.formResult(1);
@@ -82,6 +76,7 @@ public class QuestionFragment extends Fragment {
             else viewModel.formResult(0);
             buttonAction();
         });
+
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             //при нажатии кнопки назад не должно ничего происходить
@@ -93,9 +88,11 @@ public class QuestionFragment extends Fragment {
         return binding.getRoot();
     }
 
+    //При нажатии кнопки ответа номер вопроса увеличивается
     private void buttonAction() {
         viewModel.increaseNumberOfQuestion();//увеличивается номер вопроса
     }
+    //Отрисовка вопросов и кнопок
     private void setViews(){
         binding.question.setText(task.getList().get(viewModel.getNumberOfQuestionValue() - 1).getQuestion());
         binding.questionButton1.setText(task.getList().get(viewModel.getNumberOfQuestionValue() - 1).getAnswers()[0]);

@@ -41,7 +41,7 @@ public class ResultFragment extends Fragment {
             binding.textView.setText("Все правильно!");
         }
         else{
-            binding.textView.setText(res);
+            binding.textView.setText(String.format("Правильных ответов: %d%%\n\n%s", (sum*100) / 7, res));
         }
         binding.buttonRes.setOnClickListener(v -> {
             Navigation.findNavController(binding.getRoot())

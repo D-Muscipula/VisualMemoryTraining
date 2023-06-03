@@ -11,7 +11,7 @@ import androidx.navigation.Navigation;
 
 import com.example.visualmemorytraining.R;
 import com.google.firebase.auth.FirebaseAuth;
-
+//Диалог выхода из аккаунта из фрагмента лидерборда
 public class LogOutDialogFragmentFromLeaderBoard extends DialogFragment {
     @NonNull
     @Override
@@ -20,8 +20,6 @@ public class LogOutDialogFragmentFromLeaderBoard extends DialogFragment {
         builder.setTitle("Подтвердите выход из аккаунта");
         builder.setMessage("Вы хотите выйти из аккаунта?");
         builder.setPositiveButton("Да", (dialog, id) -> {
-            //TODO все ли ок?
-            //moveTaskToBack(true);
             FirebaseAuth.getInstance().signOut();
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
                     .navigate(R.id.action_leaderBoardFragment_to_loginFragment);

@@ -7,13 +7,15 @@
     tools:context=".ui.fragments.ImageFragment">
 
     <ImageView
-        android:layout_marginTop="10dp"
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textViewMethod"
         app:srcCompat="@drawable/geometricheskaya_abstrakcziya_pit_mondrian" />
 
     <TextView
@@ -21,22 +23,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="34sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMethod"
         tools:text="Времени осталось: \n01:00" />
 
+    <TextView
+        android:id="@+id/textViewMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:gravity="center" />
     <Button
         android:id="@+id/buttonImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/to_questions"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textViewImage"
+        app:layout_constraintTop_toBottomOf="@id/textViewImage"
         app:layout_constraintStart_toStartOf="parent" />
     <ProgressBar
         android:id="@+id/progressBar"

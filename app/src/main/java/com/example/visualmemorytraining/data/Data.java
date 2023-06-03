@@ -1,10 +1,8 @@
 package com.example.visualmemorytraining.data;
-
+//Класс данных кнопки
 public class Data {
     String name;
     String color ="";
-    //String isDone = "No";
-    //TODO свойство для изменения цвета при выполнении задания
     public String getName() {
         return name;
     }

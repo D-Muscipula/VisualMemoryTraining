@@ -1,6 +1,6 @@
 package com.example.visualmemorytraining.ui.fragments;
 
-import static com.example.visualmemorytraining.MainFragmentViewModel.getScores;
+import static com.example.visualmemorytraining.ui.viewmodels.MainFragmentViewModel.getScores;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.visualmemorytraining.MainFragmentViewModel;
+import com.example.visualmemorytraining.ui.viewmodels.MainFragmentViewModel;
 import com.example.visualmemorytraining.R;
 import com.example.visualmemorytraining.data.User;
 import com.example.visualmemorytraining.data.ButtonData;
@@ -37,31 +37,21 @@ public class MainFragment extends Fragment {
     private DatabaseReference mDataBase;
     private String USER_KEY = "User";
     private MainFragmentViewModel viewModel;
-    //TODO
-   // public static String email;
-    //public static int scores;
-
-    //private static SharedPreferences pref;
     @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
-        //pref = getActivity().getSharedPreferences("Scores", Context.MODE_PRIVATE);
-//        viewModel = new ViewModelProvider(this).get(MainFragmentViewModel.class);
         viewModel = new ViewModelProvider(this).get(MainFragmentViewModel.class);
-//        //TODO статус кнопки
-//       // viewModel.onRefreshed();
-//        viewModel.buttons.observe(getViewLifecycleOwner(),priceData ->{
+        // Адаптер RecyclerView
         ExerciseButtonAdapter buttonAdapter = new ExerciseButtonAdapter(ButtonData.getSource());
         binding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(requireContext())
         );
         binding.recyclerView.setAdapter(buttonAdapter);
-//        });
+        //Работа с базой данных
         mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        //DatabaseReference rootRef = ;
         DatabaseReference uidRef = FirebaseDatabase.getInstance().getReference().child(USER_KEY).child(uid);
         binding.scores.setText("Количество очков: " + getScores());
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -69,13 +59,11 @@ public class MainFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 User user = dataSnapshot.getValue(User.class);
-                //scores = user.scores;
                 viewModel.currentScores(user.scores);
                 viewModel.currentEmail(user.email);
                 Log.d("Firebase", String.valueOf(user.scores));
                 binding.scores.setText("Количество очков: " + user.scores);
-                //TODO
-                //email = user.email;
+
             }
 
             @Override
@@ -85,20 +73,19 @@ public class MainFragment extends Fragment {
         };
         uidRef.addListenerForSingleValueEvent(valueEventListener);
 
-        //binding.scores.setText(String.format("%s%s", binding.scores.getText(), MainActivity.getPref().getInt("scores", 0)));
-
+        //Кнопка для перехода к лидерборду
         ImageButton toLeaderBoard = binding.toLeaderBoard;
         toLeaderBoard.setOnClickListener(v -> {
-            //Toast.makeText(getContext(),"Лидерборд",Toast.LENGTH_SHORT).show();
             Navigation.findNavController(v)
                     .navigate(R.id.action_mainFragment_to_leaderBoardFragment);
         });
+        //Кнопка для выхода из аккаунта
         binding.logOut.setOnClickListener(v -> {
             DialogFragment newFragment = new LogOutDialogFragment();
             newFragment.show(getParentFragmentManager(), "exit");
         });
 
-//TODO Действие на кнопку назад
+        //Действие на кнопку назад
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             //при нажатии кнопки назад появляется alertDialog
@@ -114,7 +101,4 @@ public class MainFragment extends Fragment {
 
     }
 
-    //public static SharedPreferences getPref() {
-    //return pref;
-    //}
 }

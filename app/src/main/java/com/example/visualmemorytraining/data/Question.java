@@ -1,5 +1,5 @@
 package com.example.visualmemorytraining.data;
-
+//Класс вопроса
 public class Question {
     private final String question;
     private final String[] answers = new String[4];
@@ -17,9 +17,11 @@ public class Question {
     public String getQuestion() {
         return question;
     }
+
     public String[] getAnswers() {
         return answers;
     }
+
     public String getRightAnswer() {
         return rightAnswer;
     }
